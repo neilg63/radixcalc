@@ -197,8 +197,7 @@ var app = new Vue({
       }
       this.prevVal = this.decResult;
       this.prevNum = this.result;
-      this.result = '0';
-      this.decResult = 0;
+      this.zeroResult();
     },
     add:function() {
       this._operate('+');
@@ -273,8 +272,7 @@ var app = new Vue({
           this.prevClicked = '=';
         }
       } else if (this.prevClicked == '=' && op=='=') {
-        this.result = '0';
-        this.decResult = 0;
+        this.zeroResult();
       }
       return resultSet;
     },
@@ -284,8 +282,7 @@ var app = new Vue({
         this.prevVal = 0;
         this.showPrev = false;
       } else {
-        this.result = '0';
-        this.decResult = 0;
+        this.zeroResult();
       }
     },
     truncate: function(numStr) {
@@ -327,12 +324,12 @@ var app = new Vue({
             if (romanNums.hasOwnProperty(ch)) {
               v1 = romanNums[ch];
             }
-            if (prevIndex < currIndex) {
+            if (prevIndex < currIndex && pvs.length < 5) {
               dec += v1 - _.sum(pvs);
             } else {
               dec += v1;
             }
-            if (pCh == ch) {
+            if (pCh == ch && pvs.length < 3) {
               pvs.push(v1);
               pvs.push(v1);
             } else {
@@ -384,6 +381,17 @@ var app = new Vue({
       }
       return parseFloat(dec) / mult;
     },
+    zeroResult: function() {
+      switch (this.system) {
+        case 'roman':
+          this.result ='';
+          break;
+        default:
+          this.result ='0';
+          break;
+      }
+      this.decResult = 0;
+    },
     backspace: function() {
       var len = this.result.length;
       if (len > 1) {
@@ -391,8 +399,7 @@ var app = new Vue({
         this.result = this.result.substr(0,(len-remChars));
         this.decResult = this.convert(this.result);
       } else {
-        this.result ='0';
-        this.decResult = 0;
+        this.zeroResult();
       }
       
     },
