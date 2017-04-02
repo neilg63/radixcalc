@@ -16,13 +16,35 @@ body {
 	left: 1em;
 	bottom: 1em;
 	opacity: 0.75;
+	transform: scale(1) translate(0,10%) rotate(180deg);
 	transition: all 0.5s ease-in;
 }
 
 #radix-logo:hover {
 	opacity: 1;
-	transform: scale(2) translate(25%,-25%) rotate(180deg);
+	transform: scale(2) translate(25%,0) rotate(0deg);
 }
+
+#radix-logo .text {
+	position: absolute;
+	opacity: 0;
+	color: white;
+	top: 25%;
+	width: 50%;
+	padding: 15% 25%;
+	font-size: 0.5em;
+	text-align: center;
+}
+
+.radix-8 #radix-logo:hover .base-8,
+.radix-10 #radix-logo:hover .base-10,
+.radix-12 #radix-logo:hover .base-12,
+.radix-16 #radix-logo:hover .base-16,
+.radix-20 #radix-logo:hover .base-20,
+.radix-60 #radix-logo:hover .base-60 {
+	opacity: 1;
+}
+
 
 #radix-logo:before {
 	font-family: icomoon;
