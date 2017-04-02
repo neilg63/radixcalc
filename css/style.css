@@ -21,7 +21,7 @@ body {
 
 #radix-logo:hover {
 	opacity: 1;
-	transform: scale(2) translate(25%,-25%);
+	transform: scale(2) translate(25%,-25%) rotate(180deg);
 }
 
 #radix-logo:before {
