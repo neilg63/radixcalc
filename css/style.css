@@ -14,15 +14,18 @@ body {
 #radix-logo {
 	position: absolute;
 	left: 1em;
-	bottom: 1em;
+	bottom: 2em;
 	opacity: 0.75;
-	transform: scale(1) translate(0,10%) rotate(180deg);
+	transform: scale(1) translate(0,20%) rotate(180deg);
 	transition: all 0.5s ease-in;
+	max-height: 5em;
+	max-width: 8em;
+	overflow: hidden;
 }
 
 #radix-logo:hover {
 	opacity: 1;
-	transform: scale(2) translate(25%,0) rotate(0deg);
+	transform: scale(2) translate(25%,-10%) rotate(0deg);
 }
 
 #radix-logo .text {
@@ -36,6 +39,7 @@ body {
 	text-align: center;
 }
 
+.radix-2 #radix-logo:hover .base-2,
 .radix-8 #radix-logo:hover .base-8,
 .radix-10 #radix-logo:hover .base-10,
 .radix-12 #radix-logo:hover .base-12,
@@ -45,10 +49,31 @@ body {
 	opacity: 1;
 }
 
+.radix-2 #radix-logo:hover .base-2 {
+	padding: 20% 10%;
+	width: 80%;
+}
+
+.radix-2 #radix-logo:hover .base-2 span {
+	display: inline-block;
+}
+
+.radix-2 #radix-logo:hover .base-2 span.first {
+	padding-right: 15%;
+}
+
+.radix-2 #radix-logo:hover .base-2 span.second {
+	padding-left: 15%;
+}
+
 
 #radix-logo:before {
 	font-family: icomoon;
 	font-size: 6em;
+}
+
+.radix-2 #radix-logo:before {
+	content: "\e906";
 }
 
 .radix-8 #radix-logo:before {

@@ -76,8 +76,8 @@
 		</form>
 		<div id="option-toggle" class="icon-cog" v-on:click="toggleOptions()"></div>
 	</section>
-	<div id="radix-logo">
-		<div class="text base-2">Binary</div>
+	<div id="radix-logo" v-on:mouseover="showOptPane()" v-on:mouseout="hideOptPane()">
+		<div class="text base-2"><span class="first">Binary</span><span class="second">Binary</span></div>
 		<div class="text base-8">Octal</div>
 		<div class="text base-10">Decimal</div>
 		<div class="text base-12">Dozenal / Duodecimal</div>

@@ -338,6 +338,12 @@ var app = new Vue({
     },
     toggleOptions: function() {
       this.showOptions = !this.showOptions;
+    },
+    showOptPane: function() {
+      this.showOptions = true;
+    },
+    hideOptPane: function() {
+      this.hideOptions = false;
     }
   }
 });
