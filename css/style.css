@@ -15,12 +15,18 @@ body {
 	position: absolute;
 	left: 1em;
 	bottom: 1em;
-	opacity: 0.5;
+	opacity: 0.75;
+	transition: all 0.5s ease-in;
+}
+
+#radix-logo:hover {
+	opacity: 1;
+	transform: scale(2) translate(25%,-25%);
 }
 
 #radix-logo:before {
 	font-family: icomoon;
-	font-size: 8em;
+	font-size: 6em;
 }
 
 .radix-8 #radix-logo:before {
@@ -445,6 +451,8 @@ body {
 	#radix-logo {
 		left: auto;
 		right: 1em;
-		font-size: -0.75em;
+	}
+	#radix-logo:before {
+		font-size: 3.6em;
 	}
 }
