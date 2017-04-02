@@ -1,0 +1,297 @@
+
+body {
+	font-size: 2vw;
+	margin: 0 auto;
+}
+
+#radix-calc {
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+@media screen and (min-width:1200px) {
+	body {
+		font-size: 24px;
+	}
+}
+
+.result-line,
+#result-pad,
+#radix-calc,
+#calc-pad,
+.numbers {
+	position: relative;
+}
+
+#calc-pad {
+	width: 100%;
+}
+
+.result-line {
+	width: 92%;
+	padding:  0.125em;
+}
+
+.radix-12 #result {
+	color: #009900;
+}
+
+.radix-10 #result {
+	color: #0000cc;
+}
+
+.radix-16 #result {
+	color: #006699;
+}
+
+.radix-8 #result {
+	color: #990000;
+}
+
+.radix-2 #result {
+	color: #cc5500;
+}
+
+.radix-60 #result {
+	color: #cc0099;
+}
+
+.active-line {
+	border: solid 0.1em #cccccc;
+	margin-bottom: 0.5em;
+}
+
+.active-line > div.dec-result {
+	position: absolute;
+	right:  5em;
+	top:  0.25em;
+	font-size: 1em;
+	color: #6666ff;
+}
+
+#result-history {
+	position: absolute;
+	top: 1em;
+	right: 0;
+	width: 33.33%;
+	min-height:  3em;
+	max-height: calc(100vh - 5em);
+	overflow: hidden;
+	border: solid 0.05em #cccccc;
+}
+
+.prev-results div span,
+.active-line > div {
+	display:  inline-block;
+	margin-right: 1em;
+}
+
+.show-all-results .prev-results {
+	overflow: visible;
+	
+}
+
+.prev-results > .inner {
+	position: relative;
+	padding: 0 0 0.25em 0;
+	background-color: white;
+	width: 100%;
+	height: auto;
+	overflow: auto;
+}
+
+.active-line > div {
+	font-size: 2em;
+}
+
+.prev-results > div > div.line {
+	position: relative;
+	width: 95%;
+	padding: 0.125em 2.5%;
+	margin: 0.125em 0;
+}
+
+.prev-results > div > div.line:hover {
+	background-color: #ddddee;
+}
+
+.prev-results div span.op,
+.prev-results div span.num {
+	font-size: 0.75em;
+}
+
+.prev-results div span.base {
+	font-size: 0.5em;
+}
+
+.prev-results div span.delete {
+	position: absolute;
+	font-size: 1em;
+	color:  #990000;
+	cursor: pointer;
+	top: 0.25em;
+	right: 0.25em;
+}
+
+.prev-results div span.base,
+.prev-results div span.delete {
+	opacity: 0;
+}
+
+.prev-results div.line:hover span.delete,
+.prev-results div.line:hover span.base {
+	opacity: 1;
+}
+
+#result-pad {
+	margin-top: 0.5em;
+	width:  66.667%;
+}
+
+#calc-pad .numbers {
+	width: 45%;
+	float: left;
+}
+
+.radix-2 #calc-pad .numbers {
+	width: 50%;
+}
+
+#calc-pad .operators {
+	width: 50%;
+	float: left;
+	display: flex;
+	flex-direction: column;
+	max-width:  6em;
+}
+
+.operators button {
+	font-size:  2em;
+	text-align: center;
+}
+
+.dec-out {
+	transition: opacity 1s ease-in;
+}
+
+.show-dec .dec-out {
+	opacity: 1;
+}
+
+
+.radix-10 .dec-out,
+.hide-dec .dec-out {
+	opacity: 0;
+}
+
+.operators button.operator {
+	padding: 0.25em 0.125em;
+}
+
+.operators #calc-button {
+	padding: 0.625em 0.125em;
+}
+
+.numbers button {
+	width: 1.667em;
+	text-align: center;
+	padding: 0.125em;
+	margin:0 auto;
+	line-height: 1em;
+}
+
+.base-2 .numbers button {
+	font-size: 4.8em;
+}
+
+.base-8 .numbers button {
+	font-size: 3em;
+}
+.base-10 .numbers button {
+	font-size: 4em;
+}
+
+.base-12 .numbers button {
+	font-size: 3.2em;
+}
+
+.base-16 .numbers button {
+	font-size: 2.8em;
+}
+
+.base-20 .numbers button {
+	font-size: 2.25em;
+}
+
+.base-60 .numbers button {
+	font-size: 1.25em;
+}
+
+.numbers {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.numbers .cell {
+	position: relative;
+}
+
+.rows-2-across .numbers .cell {
+	max-width: 50%;
+}
+
+.rows-3-across .numbers .cell {
+	max-width: 33.33%;
+}
+
+.rows-4-across .numbers .cell {
+	max-width: 25%;
+}
+
+.rows-5-across .numbers .cell {
+	max-width: 20%;
+}
+
+.rows-10-across .numbers .cell {
+	max-width: 10%;
+}
+.display-control {
+	position: absolute;
+	top: 0.125em;
+	width: 1.5em;
+	font-size: 1.75em;
+}
+
+#clear-button {
+	right: 0;
+}
+
+#back-button {
+	right: 1.667em;
+}
+
+#option-pane {
+	position: fixed;
+	clear:  both;
+	right: 1em;
+	bottom: 1em;
+}
+
+@media screen and (min-width:1200px) {
+	#option-pane {
+		right: 2vw;
+	}
+}
+
+@media screen and (min-width:1280px) {
+	#option-pane {
+		right: 5vw;
+	}
+}
+
+@media screen and (min-width:1440px) {
+	#option-pane {
+		right: 10vw;
+	}
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dozenal Calculator</title>
+	<link type="text/css" href="//unpkg.com/purecss@0.6.1/build/pure-min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<script type="text/javascript" src="/js/lib/lodash.min.js"></script>
+	<script type="text/javascript" src="/js/utils.js"></script>
+	<script type="text/javascript" src="/js/lib/vue.js"></script>
+</head>
+<body>
+
+<main id="radix-calc" :class="[showDec? 'show-dec' : 'hide-dec',radixClass]">
+	<section id="result-pad" :class="resultPadClass">
+		
+		<div class="active-line result-line">
+			<div id="prev-val" v-if="showPrev" :title="prevVal">{{truncate(prevNum)}}</div>
+			<div id="mode" v-if="showPrev">{{mode}}</div>
+			<div id="result" :title="decResult">{{truncate(result)}}</div>
+
+			<button id="back-button" class="display-control" v-on:click="backspace()">&lt;</button>
+			<button id="clear-button" class="display-control" v-on:click="clear()">C</button>
+			<div class="dec-result dec-out">{{decResult}}</div>
+		</div>
+		
+	</section>
+	<div id="result-history" class="prev-results" v-if="hasResultSets">
+		<div class="inner" v-on:click.stop.prevent="toggleAllResults()">
+		<template v-for="(set,index) in resultSets">
+			<div class="line" :class="'base-'+set.base">
+				<span class="first num">{{truncate(set.first)}}</span>
+				<span class="op">{{set.operator}}</span>
+				<span class="second num">{{truncate(set.second)}}</span>
+				<span class="op">=</span>
+				<span class="result num">{{truncate(set.result)}}</span>
+				<span class="base">{{set.base}}</span>
+				<span class="delete"  v-on:click="deleteResult(index)">-</span>
+			</div>
+		</template>
+		</div>
+	</div>
+	<section id="calc-pad" :class="layoutMode">
+		<div class="numbers">
+			
+			<template v-for="num in baseNums">
+				<div class="cell" :class="num.class"><button :id="num.id" v-on:click="enterNum(num.value,num.name)">{{num.name}}</button></div>
+			</template>
+			<div class="cell cell-dot"><button id="cell-dott" v-on:click="enterDot()">{{placeSep}}</button></div>
+		</div>
+		<div class="operators">
+		<button id="add-operator" class="operator" v-on:click="add()">+</button>
+		<button id="subtract-operator" class="operator" v-on:click="subtract()">-</button>
+		<button id="divide-operator" class="operator" v-on:click="divide()">/</button>
+		<button id="multiply-operator" class="operator" v-on:click="multiply()">x</button>
+
+		<button id="calc-button" v-on:click="calc()">=</button>
+		</div>
+	</section>
+
+	<section id="option-pane">
+		<div class="control-row">
+			<input type="checkbox" id="show-dec-checkbox" v-model="showDec" />
+			<label for="show-dec-checkbox">Show decimal translation</label>
+		</div>
+		<select v-model="base" v-on:change="updateBase()">
+			<option value="2">Binary</option>
+			<option value="8">Octal</option>
+			<option value="10">Decimal</option>
+			<option value="12">Dozenal</option>
+			<option value="16">Hexadeximal</option>
+			<option value="20">Vigesimal</option>
+			<option value="60">Sexagesimal</option>
+		</select>
+	</section>
+
+</main>
+
+
+	<script type="text/javascript" src="/js/dozenal.js"></script>
+</body>
+</html>
