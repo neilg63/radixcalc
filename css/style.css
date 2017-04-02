@@ -18,14 +18,14 @@ body {
 	opacity: 0.75;
 	transform: scale(1) translate(0,20%) rotate(180deg);
 	transition: all 0.5s ease-in;
-	max-height: 5em;
+	max-height: 8em;
 	max-width: 8em;
 	overflow: hidden;
 }
 
 #radix-logo:hover {
 	opacity: 1;
-	transform: scale(2) translate(25%,-10%) rotate(0deg);
+	transform: scale(1.5) translate(16.667%,-5%) rotate(0deg);
 }
 
 #radix-logo .text {
@@ -110,6 +110,11 @@ body {
 #calc-pad,
 .numbers {
 	position: relative;
+}
+
+.system-roman .numbers .cell-dot {
+	opacity: 0;
+	pointer-events: none;
 }
 
 #calc-pad {
@@ -287,6 +292,10 @@ body {
 .radix-10 .dec-out,
 .hide-dec .dec-out {
 	opacity: 0;
+}
+
+.radix-10.system-roman .dec-out {
+	opacity: 1;
 }
 
 .operators button.operator {

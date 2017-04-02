@@ -2,6 +2,8 @@ var app = new Vue({
   el: '#radix-calc',
   data: {
     base: 12,
+    baseId: 12,
+    system: 'place-value',
     showDec: true,
     result: 0,
     radixClass: 'radix-12',
@@ -17,7 +19,17 @@ var app = new Vue({
     mode: '',
     prevClicked: '',
     resultPadClass:'',
-    showOptions: false
+    showOptions: false,
+    optionsHideable:true,
+    romanBaseNums: [
+      {value: 1,name: 'I',id: 'num-i','class': 'cell-num-i'},
+      {value: 5,name: 'V',id: 'num-v','class': 'cell-num-v'},
+      {value: 10,name: 'X',id: 'num-x','class': 'cell-num-x'},
+      {value: 50,name: 'L',id: 'num-l','class': 'cell-num-l'},
+      {value: 100,name: 'C',id: 'num-c','class': 'cell-num-c'},
+      {value: 500,name: 'D',id: 'num-d','class': 'cell-num-d'},
+      {value: 1000,name: 'M',id: 'num-m','class': 'cell-num-m'},
+    ]
   },
   created: function() {
     
@@ -36,6 +48,12 @@ var app = new Vue({
         var d = stored.data;
         if (d.base) {
           this.base = parseInt(d.base);
+        }
+        if (d.baseId) {
+          this.baseId = d.baseId;
+        }
+        if (d.system) {
+          this.system = d.system;
         }
         if (d.hasOwnProperty('showDec')) {
           this.showDec = d.showDec;
@@ -91,7 +109,7 @@ var app = new Vue({
           value: n,
           name: name,
           id: 'num-'+n,
-          class: 'cell-num-'+n
+          'class': 'cell-num-'+n
         });
       }
       if (this.base < 30) {
@@ -99,6 +117,9 @@ var app = new Vue({
       } else {
         this.baseNums.unshift(zeroNum);
       }
+    },
+    loadRoman: function() {
+      this.baseNums=this.romanBaseNums;
     },
     enterNum: _.debounce(function(num,name) {
       var res = this.result.toString();
@@ -119,9 +140,28 @@ var app = new Vue({
       }
     },
     updateBase:function() {
-      this.base = parseInt(this.base);
+      var parts = this.baseId.toString().split('-');
+      if (parts.length>1) {
+        this.base = parseInt(parts[0]);
+        switch (parts[1]) {
+          case 'roman':
+            this.system = 'roman';
+            break;
+          default:
+            this.system = 'place-value';
+            break;
+        }
+      } else {
+        this.base = parseInt(this.baseId);
+      }
       this.radixClass = 'radix-' + this.base;
-      this.loadNums();
+      if (this.system == 'roman' && this.base == 10) {
+        this.loadRoman();
+      } else {
+        this.system = 'place-value';
+        this.loadNums();
+      }
+      
       switch (this.base) {
         case 2:
           this.layoutMode = 'base-2 rows-3-across';
@@ -255,13 +295,43 @@ var app = new Vue({
       return numStr;
     },
     convert: function(numStr) {
-      if (this.base < 36) {
+      if (this.base < 36 && this.base !== 10) {
         return this._convertAlphaNum(numStr);
       } else if (this.base == 10) {
-        return parseFloat(numStr);
+        if (this.system == 'roman') {
+          return this._convertRoman(numStr);
+        } else {
+          return parseFloat(numStr);
+        }
       } else {
         return this._convertDecCols(numStr);
       }
+    },
+    _convertRoman: function(numStr) {
+      /*var romanSymbols = _.map(this.romanBaseNums,function(r){ return r.name;});
+      var dec=0, romanNums = _.zipObject(romanSymbols,_.map(this.romanBaseNums,function(r){ return r.value;}));
+      
+      if (typeof numStr == 'string') {
+        numStr = numStr.trim();
+        if (numStr.length>0) {
+          var chars = numStr.split(''),len=chars.length,i=0,v1,ch,pv,currIndex,prevIndex;
+          for (;i<len;i++) {
+            ch = chars[i].trim().toUpperCase();
+            currIndex = romanSymbols.indexOf(ch);
+            if (romanNums.hasOwnProperty(ch)) {
+              v1 = romanNums[ch];
+            }
+            if (prevIndex < currIndex) {
+              dec += v1;
+            } else {
+              dec += v1;
+            }
+            pv = v1;
+            prevIndex = currIndex;
+          }
+        }*/
+      }
+      return dec;
     },
     _convertDecCols: function(numStr) {
       var chars = numStr.split(''),
@@ -310,7 +380,7 @@ var app = new Vue({
         this.decResult = this.convert(this.result);
       } else {
         this.result ='0';
-        his.decResult = 0;
+        this.decResult = 0;
       }
       
     },
@@ -332,18 +402,27 @@ var app = new Vue({
     updateOptions: function() {
       var opts = {
         showDec: this.showDec,
-        base: this.base
+        base: this.base,
+        system: this.system,
+        baseId: this.baseId
       }
       storeItem('options', opts);
     },
     toggleOptions: function() {
       this.showOptions = !this.showOptions;
+      this.optionsHideable = !this.showOptions;
     },
     showOptPane: function() {
-      this.showOptions = true;
+      if (!this.showOptions) {
+        this.showOptions = true;
+      } else {
+        this.optionsHideable = false;
+      }
     },
     hideOptPane: function() {
-      this.hideOptions = false;
+      if (this.optionsHideable) {
+        this.showOptions = false;
+      }
     }
   }
 });

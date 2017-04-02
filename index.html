@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<main id="radix-calc" :class="[showDec? 'show-dec' : 'hide-dec',radixClass,showOptions? 'show-options' : 'hide-options']">
+<main id="radix-calc" :class="[showDec? 'show-dec' : 'hide-dec',radixClass,showOptions? 'show-options' : 'hide-options','system-'+this.system]">
 	<section id="result-pad" :class="resultPadClass">
 		
 		<div class="active-line result-line">
@@ -32,7 +32,7 @@
 			<template v-for="num in baseNums">
 				<div class="cell" :class="num.class"><button :id="num.id" v-on:click="enterNum(num.value,num.name)">{{num.name}}</button></div>
 			</template>
-			<div class="cell cell-dot"><button id="cell-dott" v-on:click="enterDot()">{{placeSep}}</button></div>
+			<div class="cell cell-dot"><button id="cell-dot" v-on:click="enterDot()">{{placeSep}}</button></div>
 		</div>
 		<div class="operators">
 		<button id="add-operator" class="operator" v-on:click="add()">+</button>
@@ -64,10 +64,11 @@
 			<input type="checkbox" id="show-dec-checkbox" v-model="showDec" />
 			<label for="show-dec-checkbox" title="Show decimal notation in non-decimal bases">Show decimal</label>
 		</div>
-		<select v-model="base" class="radix-control control" v-on:change="updateBase()">
+		<select v-model="baseId" class="radix-control control" v-on:change="updateBase()">
 			<option value="2">Binary</option>
 			<option value="8">Octal</option>
 			<option value="10">Decimal</option>
+			<option value="10-roman">Roman</option>
 			<option value="12">Dozenal</option>
 			<option value="16">Hexadeximal</option>
 			<option value="20">Vigesimal</option>
@@ -76,7 +77,7 @@
 		</form>
 		<div id="option-toggle" class="icon-cog" v-on:click="toggleOptions()"></div>
 	</section>
-	<div id="radix-logo" v-on:mouseover="showOptPane()" v-on:mouseout="hideOptPane()">
+	<div id="radix-logo" v-on:mouseenter="showOptPane()" v-on:mouseleave="hideOptPane()">
 		<div class="text base-2"><span class="first">Binary</span><span class="second">Binary</span></div>
 		<div class="text base-8">Octal</div>
 		<div class="text base-10">Decimal</div>
