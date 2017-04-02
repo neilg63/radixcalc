@@ -35,12 +35,14 @@
 			<div class="cell cell-dot"><button id="cell-dot" v-on:click="enterDot()">{{placeSep}}</button></div>
 		</div>
 		<div class="operators">
+		<button id="calc-button" v-on:click="calc()">=</button>
 		<button id="add-operator" class="operator" v-on:click="add()">+</button>
 		<button id="subtract-operator" class="operator" v-on:click="subtract()">-</button>
 		<button id="multiply-operator" class="operator" v-on:click="multiply()">x</button>
 		<button id="divide-operator" class="operator" v-on:click="divide()">/</button>
+		<button id="multiply-operator" class="operator" v-on:click="power()">^</button>
 
-		<button id="calc-button" v-on:click="calc()">=</button>
+		
 		</div>
 	</section>
 	<div id="result-history" class="prev-results" v-if="hasResultSets">

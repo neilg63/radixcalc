@@ -212,6 +212,9 @@ var app = new Vue({
     multiply:function() {
       this._operate('*');
     },
+    power:function() {
+      this._operate('^');
+    },
     calc:function(op) {
       if (!op) {
         op = '=';
@@ -240,6 +243,9 @@ var app = new Vue({
             break;
           case '*':
             this.decResult = num1 * num2;
+            break;
+          case '^':
+            this.decResult = Math.pow(num1,num2);
             break;
           case '/':
             if (num2 !== 0) {
