@@ -308,9 +308,9 @@ var app = new Vue({
       }
     },
     _convertRoman: function(numStr) {
-      /*var romanSymbols = _.map(this.romanBaseNums,function(r){ return r.name;});
-      var dec=0, romanNums = _.zipObject(romanSymbols,_.map(this.romanBaseNums,function(r){ return r.value;}));
-      
+      var romanSymbols = _.map(this.romanBaseNums,function(r){ return r.name;}),
+      dec=0, romanNums = _.zipObject(romanSymbols,_.map(this.romanBaseNums,function(r){ return r.value;}));
+      /*
       if (typeof numStr == 'string') {
         numStr = numStr.trim();
         if (numStr.length>0) {
@@ -329,8 +329,8 @@ var app = new Vue({
             pv = v1;
             prevIndex = currIndex;
           }
-        }*/
-      }
+        }
+      }*/
       return dec;
     },
     _convertDecCols: function(numStr) {
