@@ -112,14 +112,23 @@ body {
 }
 
 #result-history {
-	position: absolute;
-	top: 3em;
-	right: 0;
-	width: 33.33%;
+	position: relative;
+	clear: both;
+	width:100%;
+	top: 1em;
 	min-height:  3em;
-	max-height: calc(100vh - 5em);
-	overflow: hidden;
 	border: solid 0.05em #cccccc;
+}
+
+@media screen and (min-width: 768px) {
+	#result-history {
+		width: 33.33%;
+		overflow: auto;
+		position: absolute;
+		right: 0;
+		top: 3em;
+		max-height: calc(100vh - 5em);
+	}
 }
 
 .prev-results div span,
@@ -188,6 +197,7 @@ body {
 #result-pad {
 	margin-top: 0.5em;
 	width:  66.667%;
+	transition: margin-top 0.5s ease-in;
 }
 
 #calc-pad .numbers {
@@ -344,7 +354,7 @@ body {
 	position: absolute;
 	top: 0;
 	right:0;
-	font-size: 2em;
+	font-size: 2.5em;
 	color: #999999;
 	transition: all .5s ease-in;
 }
@@ -371,8 +381,7 @@ body {
 }
 
 .show-options #option-pane {
-	min-height: 2.5em;
-	background-color: white;
+	min-height: 2em;
 }
 
 .show-options #option-toggle:hover {
@@ -397,7 +406,7 @@ body {
 	}
 }
 
-@media screen and (max-width:768px) {
+@media screen and (max-width:767px) {
 
 	body {
 		font-size:3.75vw;
@@ -433,9 +442,9 @@ body {
 		width: 25%;
 	}
 
-	#result-history {
-		position: relative;
-		clear: both;
-		width:100%;
+	#radix-logo {
+		left: auto;
+		right: 1em;
+		font-size: -0.75em;
 	}
 }
