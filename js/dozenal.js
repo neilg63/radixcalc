@@ -316,11 +316,11 @@ var app = new Vue({
     _convertRoman: function(numStr) {
       var romanSymbols = _.map(this.romanBaseNums,function(r){ return r.name;}),
       dec=0, romanNums = _.zipObject(romanSymbols,_.map(this.romanBaseNums,function(r){ return r.value;}));
-      /*
+     
       if (typeof numStr == 'string') {
         numStr = numStr.trim();
         if (numStr.length>0) {
-          var chars = numStr.split(''),len=chars.length,i=0,v1,ch,pv,currIndex,prevIndex;
+          var chars = numStr.split(''),len=chars.length,i=0,v1,ch,pvs,pCh,currIndex,prevIndex;
           for (;i<len;i++) {
             ch = chars[i].trim().toUpperCase();
             currIndex = romanSymbols.indexOf(ch);
@@ -328,15 +328,21 @@ var app = new Vue({
               v1 = romanNums[ch];
             }
             if (prevIndex < currIndex) {
-              dec += v1;
+              dec += v1 - _.sum(pvs);
             } else {
               dec += v1;
             }
-            pv = v1;
+            if (pCh == ch) {
+              pvs.push(v1);
+              pvs.push(v1);
+            } else {
+              pvs = [v1,v1];
+            }
             prevIndex = currIndex;
+            pCh = ch;
           }
         }
-      }*/
+      }
       return dec;
     },
     _convertDecCols: function(numStr) {
