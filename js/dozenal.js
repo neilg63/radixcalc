@@ -71,10 +71,10 @@ var app = new Vue({
             case 12:
               switch (n) {
                 case 10:
-                  name = 'ð';
+                  name = 'd';
                   break;
                 case 11:
-                  name = '𝑒';
+                  name = 'e';
                   break;
               }
               break;
@@ -209,7 +209,7 @@ var app = new Vue({
         var res = this.decResult.toString(this.base);
         switch (this.base) {
           case 12:
-            this.result = res.replace(/a/g,'ð').replace(/b/g,'𝑒');
+            this.result = res.replace(/a/g,'d').replace(/b/g,'e');
             break;
           default:
             this.result = res;
@@ -285,7 +285,7 @@ var app = new Vue({
       var dec = 0,mult=1;
       switch (this.base) {
         case 12:
-          numStr = numStr.trim().replace(/ð/g,'a').replace(/𝑒/g,'b');
+          numStr = numStr.trim().replace(/d/g,'a').replace(/e/g,'b');
           break;
       }
       var parts = numStr.split(this.placeSep);
