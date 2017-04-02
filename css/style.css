@@ -7,6 +7,42 @@ body {
 #radix-calc {
 	max-width: 1200px;
 	margin: 0 auto;
+	padding: 0 2.5%;
+	min-height: 95vh;
+}
+
+#radix-logo {
+	position: absolute;
+	left: 1em;
+	bottom: 1em;
+	opacity: 0.5;
+}
+
+#radix-logo:before {
+	font-family: icomoon;
+	font-size: 8em;
+}
+
+.radix-8 #radix-logo:before {
+	content: "\e905";
+}
+
+.radix-10 #radix-logo:before {
+	content: "\e904";
+}
+
+.radix-12 #radix-logo:before {
+	content: "\e900";
+}
+
+.radix-16 #radix-logo:before {
+	content: "\e903";
+}
+.radix-20 #radix-logo:before {
+	content: "\e902";
+}
+.radix-60 #radix-logo:before {
+	content: "\e901";
 }
 
 @media screen and (min-width:1200px) {
@@ -32,26 +68,32 @@ body {
 	padding:  0.125em;
 }
 
+.radix-12 #radix-logo:before,
 .radix-12 #result {
 	color: #009900;
 }
 
+.radix-10 #radix-logo:before,
 .radix-10 #result {
 	color: #0000cc;
 }
 
+.radix-16 #radix-logo:before,
 .radix-16 #result {
 	color: #006699;
 }
 
+.radix-8 #radix-logo:before,
 .radix-8 #result {
 	color: #990000;
 }
 
+.radix-2 #radix-logo:before,
 .radix-2 #result {
 	color: #cc5500;
 }
 
+.radix-60 #radix-logo:before,
 .radix-60 #result {
 	color: #cc0099;
 }
@@ -71,7 +113,7 @@ body {
 
 #result-history {
 	position: absolute;
-	top: 1em;
+	top: 3em;
 	right: 0;
 	width: 33.33%;
 	min-height:  3em;
@@ -275,7 +317,66 @@ body {
 	position: fixed;
 	clear:  both;
 	right: 1em;
-	bottom: 1em;
+	top: 0.5em;
+	padding: 0.25em 2em 0.25 1em;
+}
+
+#option-pane .control {
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity 0.5s ease-in;
+	font-size: 0.75em;
+	float: right;
+	margin-right: 1em;
+}
+
+#option-pane > form {
+	position: relative;
+	right: 2em;
+}
+
+#option-pane .control input,
+#option-pane .control label {
+	display: inline-block;
+}
+
+#option-toggle {
+	position: absolute;
+	top: 0;
+	right:0;
+	font-size: 2em;
+	color: #999999;
+	transition: all .5s ease-in;
+}
+
+#option-toggle:before {
+	position: relative;
+	display: block;
+	transition: all .5s ease-in;
+	transform-origin: center center;
+	transform: rotate(0deg);
+}
+
+#option-toggle:hover {
+	color: #0099ff;
+}
+
+.show-options #option-toggle:before {
+	transform: rotate(270deg);
+}
+
+.show-options #option-pane .control {
+	opacity: 1;
+	pointer-events: all;
+}
+
+.show-options #option-pane {
+	min-height: 2.5em;
+	background-color: white;
+}
+
+.show-options #option-toggle:hover {
+	color: #009999;
 }
 
 @media screen and (min-width:1200px) {
@@ -293,5 +394,48 @@ body {
 @media screen and (min-width:1440px) {
 	#option-pane {
 		right: 10vw;
+	}
+}
+
+@media screen and (max-width:768px) {
+
+	body {
+		font-size:3.75vw;
+	}
+
+	.show-options #result-pad {
+		margin-top: 3em;
+	}
+
+	.show-options #option-pane {
+		width: 100%;
+	}
+
+	.operators button {
+		font-size: 1.75em;
+	}
+
+	#calc-pad {
+		width: 100%;
+		float: none;
+	}
+
+	#result-pad {
+		width: 90%;
+	}
+
+	#calc-pad .numbers {
+		width: 70%;
+	}
+
+	#calc-pad .operators {
+		float: right;
+		width: 25%;
+	}
+
+	#result-history {
+		position: relative;
+		clear: both;
+		width:100%;
 	}
 }

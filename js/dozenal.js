@@ -16,7 +16,8 @@ var app = new Vue({
     layoutMode: 'base-12 rows-4-across',
     mode: '',
     prevClicked: '',
-    resultPadClass:''
+    resultPadClass:'',
+    showOptions: false
   },
   created: function() {
     
@@ -334,6 +335,9 @@ var app = new Vue({
         base: this.base
       }
       storeItem('options', opts);
+    },
+    toggleOptions: function() {
+      this.showOptions = !this.showOptions;
     }
   }
 });

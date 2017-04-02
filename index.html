@@ -3,6 +3,7 @@
 <head>
 	<title>Dozenal Calculator</title>
 	<link type="text/css" href="//unpkg.com/purecss@0.6.1/build/pure-min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/icomoon/style.css">
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
 	<script type="text/javascript" src="/js/lib/lodash.min.js"></script>
 	<script type="text/javascript" src="/js/utils.js"></script>
@@ -10,7 +11,7 @@
 </head>
 <body>
 
-<main id="radix-calc" :class="[showDec? 'show-dec' : 'hide-dec',radixClass]">
+<main id="radix-calc" :class="[showDec? 'show-dec' : 'hide-dec',radixClass,showOptions? 'show-options' : 'hide-options']">
 	<section id="result-pad" :class="resultPadClass">
 		
 		<div class="active-line result-line">
@@ -23,6 +24,24 @@
 			<div class="dec-result dec-out">{{decResult}}</div>
 		</div>
 		
+	</section>
+	
+	<section id="calc-pad" :class="layoutMode">
+		<div class="numbers">
+			
+			<template v-for="num in baseNums">
+				<div class="cell" :class="num.class"><button :id="num.id" v-on:click="enterNum(num.value,num.name)">{{num.name}}</button></div>
+			</template>
+			<div class="cell cell-dot"><button id="cell-dott" v-on:click="enterDot()">{{placeSep}}</button></div>
+		</div>
+		<div class="operators">
+		<button id="add-operator" class="operator" v-on:click="add()">+</button>
+		<button id="subtract-operator" class="operator" v-on:click="subtract()">-</button>
+		<button id="multiply-operator" class="operator" v-on:click="multiply()">x</button>
+		<button id="divide-operator" class="operator" v-on:click="divide()">/</button>
+
+		<button id="calc-button" v-on:click="calc()">=</button>
+		</div>
 	</section>
 	<div id="result-history" class="prev-results" v-if="hasResultSets">
 		<div class="inner" v-on:click.stop.prevent="toggleAllResults()">
@@ -39,30 +58,13 @@
 		</template>
 		</div>
 	</div>
-	<section id="calc-pad" :class="layoutMode">
-		<div class="numbers">
-			
-			<template v-for="num in baseNums">
-				<div class="cell" :class="num.class"><button :id="num.id" v-on:click="enterNum(num.value,num.name)">{{num.name}}</button></div>
-			</template>
-			<div class="cell cell-dot"><button id="cell-dott" v-on:click="enterDot()">{{placeSep}}</button></div>
-		</div>
-		<div class="operators">
-		<button id="add-operator" class="operator" v-on:click="add()">+</button>
-		<button id="subtract-operator" class="operator" v-on:click="subtract()">-</button>
-		<button id="divide-operator" class="operator" v-on:click="divide()">/</button>
-		<button id="multiply-operator" class="operator" v-on:click="multiply()">x</button>
-
-		<button id="calc-button" v-on:click="calc()">=</button>
-		</div>
-	</section>
-
 	<section id="option-pane">
-		<div class="control-row">
+		<form name="options" id="option-form">
+			<div class="control-row control">
 			<input type="checkbox" id="show-dec-checkbox" v-model="showDec" />
-			<label for="show-dec-checkbox">Show decimal translation</label>
+			<label for="show-dec-checkbox" title="Show decimal notation in non-decimal bases">Show decimal</label>
 		</div>
-		<select v-model="base" v-on:change="updateBase()">
+		<select v-model="base" class="radix-control control" v-on:change="updateBase()">
 			<option value="2">Binary</option>
 			<option value="8">Octal</option>
 			<option value="10">Decimal</option>
@@ -71,8 +73,10 @@
 			<option value="20">Vigesimal</option>
 			<option value="60">Sexagesimal</option>
 		</select>
+		</form>
+		<div id="option-toggle" class="icon-cog" v-on:click="toggleOptions()"></div>
 	</section>
-
+	<div id="radix-logo"></div>
 </main>
 
 
