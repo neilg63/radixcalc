@@ -41,7 +41,8 @@ body {
 
 .radix-2 #radix-logo:hover .base-2,
 .radix-8 #radix-logo:hover .base-8,
-.radix-10 #radix-logo:hover .base-10,
+.radix-10.system-place-value #radix-logo:hover .base-10,
+.radix-10.system-roman #radix-logo:hover .base-10-roman,
 .radix-12 #radix-logo:hover .base-12,
 .radix-16 #radix-logo:hover .base-16,
 .radix-20 #radix-logo:hover .base-20,
