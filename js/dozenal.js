@@ -164,6 +164,7 @@ var app = new Vue({
     },25),
     validateNum: function(num,name) {
       var valid = true;
+      console.log(num)
       switch (this.base) {
         case 10:
           if (this.system == 'roman') {
@@ -415,6 +416,20 @@ var app = new Vue({
       return dec;
     },
     _convertDecCols: function(numStr) {
+      var parts = numStr.split(this.placeSep),
+        val = this._convertDecColPart(parts[0]);
+      if (parts.length>1) {
+        if (typeof parts[1] == 'string') {
+          var len = parts[1].length;
+          if (len>0) {
+            var v2 = this._convertDecColPart(parts[1]);
+            val += v2 / Math.pow(10,len);
+          }
+        }
+      }
+      return val;
+    },
+    _convertDecColPart: function(numStr) {
       var chars = numStr.split(''),
         num=chars.length,
         i=0,
@@ -584,9 +599,11 @@ var app = new Vue({
             cls = [ch];
             switch (this.base) {
               case 60:
-                isSup = !isNumeric(ch);
-                if (isSup) {
-                  ch = (parseInt(ch,20) - 10).toString();
+                if (ch != '.') {
+                  isSup = !isNumeric(ch);
+                  if (isSup) {
+                    ch = (parseInt(ch,20) - 10).toString();
+                  }
                 }
                 break;
               case 10:
