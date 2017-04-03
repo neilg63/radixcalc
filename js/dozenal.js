@@ -121,11 +121,15 @@ var app = new Vue({
               break;
             case 60:
               name = String.fromCharCode(97 + Math.floor(n/10)) + (n%10).toString();
+
               break;
             default:
               name = String.fromCharCode(87 + n);
               break;
           }
+        }
+        if (this.base == 60) {
+          cls += ' sup lot-' + Math.floor(n/10);
         }
         this.baseNums.push({
           value: n,
@@ -151,10 +155,40 @@ var app = new Vue({
       if (this.base == 60 && num === 0) {
         name = 'a0';
       }
-      this.result = res + name;
+      if (this.validateNum(num,name)) {
+        this.result = res + name;
+      }
+      
       this.decResult = this.convert(this.result);
       this.prevClicked = name;
     },25),
+    validateNum: function(num,name) {
+      var valid = true;
+      switch (this.base) {
+        case 10:
+          if (this.system == 'roman') {
+            var chars = this.result.split(''),len=chars.length;
+            if (len>0) {
+              var pCh = chars[(len-1)],
+                currIndex = this.romanSymbols.indexOf(name),
+                prevIndex = this.romanSymbols.indexOf(pCh);
+                if (currIndex % 2 == 1 && name == pCh) {
+                  valid = false;
+                }
+                if (len>1) {
+                  var ppCh = chars[(len-2)],
+                    penIndex =this.romanSymbols.indexOf(ppCh);
+                    if (currIndex < prevIndex && ppCh==pCh && pCh != name) {
+                      valid = false;
+                    }
+                }
+                
+            }
+          }
+          break;
+      }
+      return valid;
+    },
     enterDot: function() {
       if (this.result.contains(this.placeSep)==false) {
         this.result += this.placeSep;

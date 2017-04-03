@@ -182,6 +182,36 @@ span.ten-3 {
 	color: #cc0099;
 }
 
+.base-60 .sup button:before {
+	font-size: 0.75em;
+	position: absolute;
+	top: 0;
+	left: 0.25em;
+}
+
+.base-60 .sup button::first-letter {
+	visibility: hidden;
+}
+.base-60 .lot-0 button:before {
+	content:  "0";
+}
+.base-60 .lot-1 button:before {
+	content:  "1";
+}
+.base-60 .lot-2 button:before {
+	content:  "2";
+}
+.base-60 .lot-3 button:before {
+	content:  "3";
+}
+.base-60 .lot-4 button:before {
+	content:  "4";
+}
+
+.base-60 .lot-5 button:before {
+	content:  "5";
+}
+
 .active-line {
 	border: solid 0.1em #cccccc;
 	margin-bottom: 0.5em;
