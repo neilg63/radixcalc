@@ -29,10 +29,19 @@ var app = new Vue({
       {value: 100,name: 'C',id: 'num-c','class': 'cell-num-c'},
       {value: 500,name: 'D',id: 'num-d','class': 'cell-num-d'},
       {value: 1000,name: 'M',id: 'num-m','class': 'cell-num-m'},
-    ]
+      {value: 5000,name: 'v',id: 'num-v3','class': 'cell-num-v3'},
+      {value: 10000,name: 'x',id: 'num-x3','class': 'cell-num-x3'},
+      {value: 50000,name: 'l',id: 'num-l3','class': 'cell-num-l3'},
+      {value: 100000,name: 'c',id: 'num-c3','class': 'cell-num-c3'},
+      {value: 500000,name: 'd',id: 'num-d3','class': 'cell-num-d3'},
+      {value: 1000000,name: 'm',id: 'num-m3','class': 'cell-num-m3'},
+    ],
+    romanSymbols:[],
+    romanNums:{}
   },
   created: function() {
-    
+    this.romanSymbols = _.map(this.romanBaseNums,function(r){ return r.name;});
+    this.romanNums = _.zipObject(this.romanSymbols,_.map(this.romanBaseNums,function(r){ return r.value;}));
     var stored = getItem('results');
     if (stored.valid) {
       if (stored.data instanceof Array) {
@@ -112,7 +121,7 @@ var app = new Vue({
           'class': 'cell-num-'+n
         });
       }
-      if (this.base < 30) {
+      if (this.base <= 36) {
         this.baseNums.push(zeroNum);
       } else {
         this.baseNums.unshift(zeroNum);
@@ -152,6 +161,7 @@ var app = new Vue({
             break;
         }
       } else {
+        this.system = 'place-value';
         this.base = parseInt(this.baseId);
       }
       this.radixClass = 'radix-' + this.base;
@@ -180,6 +190,9 @@ var app = new Vue({
           break;
         case 20:
           this.layoutMode = 'base-20 rows-5-across';
+          break;
+        case 36:
+          this.layoutMode = 'base-36 rows-6-across';
           break;
         case 60:
           this.layoutMode = 'base-60 rows-10-across';
@@ -253,9 +266,17 @@ var app = new Vue({
             break;
         }
         var res = this.decResult.toString(this.base);
+        
         switch (this.base) {
           case 12:
             this.result = res.replace(/a/g,'d').replace(/b/g,'e');
+            break;
+          case 10:
+            if (this.system == 'roman') {
+              this.result = this.renderRoman(this.decResult);
+            } else {
+              this.result = res;
+            }
             break;
           default:
             this.result = res;
@@ -298,7 +319,7 @@ var app = new Vue({
       return numStr;
     },
     convert: function(numStr) {
-      if (this.base < 36 && this.base !== 10) {
+      if (this.base <= 36 && this.base !== 10) {
         return this._convertAlphaNum(numStr);
       } else if (this.base == 10) {
         if (this.system == 'roman') {
@@ -311,30 +332,23 @@ var app = new Vue({
       }
     },
     _convertRoman: function(numStr) {
-      var romanSymbols = _.map(this.romanBaseNums,function(r){ return r.name;}),
-      dec=0, romanNums = _.zipObject(romanSymbols,_.map(this.romanBaseNums,function(r){ return r.value;}));
-     
+      var dec=0;
       if (typeof numStr == 'string') {
         numStr = numStr.trim();
         if (numStr.length>0) {
           var chars = numStr.split(''),len=chars.length,i=0,v1,ch,pvs,pCh,currIndex,prevIndex;
           for (;i<len;i++) {
-            ch = chars[i].trim().toUpperCase();
-            currIndex = romanSymbols.indexOf(ch);
-            if (romanNums.hasOwnProperty(ch)) {
-              v1 = romanNums[ch];
+            ch = chars[i].trim();
+            currIndex = this.romanSymbols.indexOf(ch);
+            if (this.romanNums.hasOwnProperty(ch)) {
+              v1 = this.romanNums[ch];
             }
-            if (prevIndex < currIndex && pvs.length < 5) {
+            if (prevIndex < currIndex && pvs.length < 3) {
               dec += v1 - _.sum(pvs);
             } else {
               dec += v1;
             }
-            if (pCh == ch && pvs.length < 3) {
-              pvs.push(v1);
-              pvs.push(v1);
-            } else {
-              pvs = [v1,v1];
-            }
+            pvs = [v1,v1];
             prevIndex = currIndex;
             pCh = ch;
           }
@@ -350,7 +364,7 @@ var app = new Vue({
         pow = Math.floor(num/2)-1,v1,v2;
       for (;i<num;i++) {
         if (i%2===0) {
-          v1 = (parseInt(chars[i],20) - 10) * 10;
+          v1 = (parseInt(chars[i],36) - 10) * 10;
         } else {
           v2 = parseInt(chars[i]);
           val += (v1+v2) * Math.pow(this.base,pow);
@@ -380,6 +394,37 @@ var app = new Vue({
         dec = parseInt(numStr,this.base);
       }
       return parseFloat(dec) / mult;
+    },
+    renderRoman: function(dec) {
+      var out='';
+      if (isNumeric(dec)) {
+        var rem=dec,
+          n=this.romanSymbols.length,
+          i=(n-1),k,v,pv,prop,ratio;
+        for (;i>=0;i--) {
+          k = this.romanSymbols[i];
+          v = this.romanNums[k];
+          if (i>0) {
+            pk = this.romanSymbols[(i-1)];
+            pv = this.romanNums[pk];
+          }
+          if (v < (rem*2)) {
+            prop = v/pv == 5? 0.8 : 0.9; 
+            ratio = rem / v;
+            if (ratio >= prop) {
+              if (ratio >= 1) {
+                out += k.repeat(Math.floor(ratio));
+                rem = rem%v;
+              } else {
+                out += pk + k;
+                rem -= (pv + v);
+              }
+              
+            }
+          }
+        }
+      }
+      return out;
     },
     zeroResult: function() {
       switch (this.system) {

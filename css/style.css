@@ -49,6 +49,10 @@ body {
 	opacity: 1;
 }
 
+.system-roman #power-operator {
+	display:  none;
+}
+
 .radix-2 #radix-logo:hover .base-2 {
 	padding: 20% 10%;
 	width: 80%;
@@ -159,6 +163,7 @@ body {
 .active-line {
 	border: solid 0.1em #cccccc;
 	margin-bottom: 0.5em;
+	height: 2.5em;
 }
 
 .active-line > div.dec-result {
@@ -298,12 +303,22 @@ body {
 	opacity: 1;
 }
 
-.operators button.operator {
-	padding: 0.25em 0.125em;
+.operators {
+	display: flex;
+	flex-direction: column;
 }
 
-.operators #calc-button {
-	padding: 0.625em 0.125em;
+.operators button.operator {
+	padding: 0.25em 0.125em;
+	max-width: 2.5em;
+	position: relative;
+}
+
+.operators button#calc-button {
+	padding: 0.5em 0.125em;
+	transform: scaleX(2);
+	margin-left: 0.625em;
+	max-width: 1.25em;
 }
 
 .numbers button {
@@ -337,6 +352,10 @@ body {
 	font-size: 2.25em;
 }
 
+.base-36 .numbers button {
+	font-size: 2em;
+}
+
 .base-60 .numbers button {
 	font-size: 1.25em;
 }
@@ -365,6 +384,10 @@ body {
 
 .rows-5-across .numbers .cell {
 	max-width: 20%;
+}
+
+.rows-6-across .numbers .cell {
+	max-width: 16.666%;
 }
 
 .rows-10-across .numbers .cell {

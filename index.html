@@ -30,7 +30,7 @@
 		<div class="numbers">
 			
 			<template v-for="num in baseNums">
-				<div class="cell" :class="num.class"><button :id="num.id" v-on:click="enterNum(num.value,num.name)">{{num.name}}</button></div>
+				<div class="cell" :class="num.class"><button :id="num.id" v-on:click="enterNum(num.value,num.name)" :title="num.value">{{num.name}}</button></div>
 			</template>
 			<div class="cell cell-dot"><button id="cell-dot" v-on:click="enterDot()">{{placeSep}}</button></div>
 		</div>
@@ -40,7 +40,7 @@
 		<button id="subtract-operator" class="operator" v-on:click="subtract()">-</button>
 		<button id="multiply-operator" class="operator" v-on:click="multiply()">x</button>
 		<button id="divide-operator" class="operator" v-on:click="divide()">/</button>
-		<button id="multiply-operator" class="operator" v-on:click="power()">^</button>
+		<button id="power-operator" class="operator" v-on:click="power()">^</button>
 
 		
 		</div>
@@ -74,6 +74,7 @@
 			<option value="12">Dozenal</option>
 			<option value="16">Hexadeximal</option>
 			<option value="20">Vigesimal</option>
+			<option value="36">Base 36</option>
 			<option value="60">Sexagesimal</option>
 		</select>
 		</form>

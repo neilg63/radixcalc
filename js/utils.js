@@ -181,6 +181,17 @@ String.prototype.segment = function(index,separator) {
   return segment;
 }
 
+String.prototype.repeat = function(times) {
+  var out = '',unit=this,i=0;
+  if (isNumeric(times)) {
+    times = parseInt(times);
+    for (;i<times;i++) {
+      out += unit;
+    }
+  }
+  return out;
+}
+
 String.prototype.sanitize = function(separator) {
   return this.toLowerCase().replace(/[^0-9a-z]+/i,'').replace(/[^0-9a-z]+$/i,'').replace(/[^0-9a-z]+/gi,separator);
 }
@@ -510,10 +521,6 @@ function _toLatLngString(dec,degType,format,approx) {
   } 
 }
 
-var toEuroDate = function(strDate) {
-    return strDate.split("-").reverse().join(".");
-};
-
 Date.prototype.format = function(order,time,separator) {
   var y = this.getFullYear(), 
     m = zeroPad2(this.getMonth() + 1 ),
@@ -581,25 +588,6 @@ Date.prototype.ymd = function(time) {
   return this.format('ymd',time,'-');
 }
 
-var isoDateTimeToMap = function(isoString) {
-  var parts = isoString.split('T'), obj={date:"",time:"00:00:00",valid:false};
-  if (parts.length>1) {
-    obj.date = parts[0];
-    var tob = parts[1].split('.').shift();
-    if (typeof tob == 'string') {
-      parts = tob.split(':');
-      if (parts.length>1) {
-        obj.time = parts[0]+':'+parts[1];
-        obj.valid = true;
-        if (parts.length>2) {
-          obj.time += ':'+parts[2];
-        }
-      }
-    }
-  }
-  return obj;
-}
-
 var zeroPad2 = function(num) {
     var isString = typeof num == 'string',
     isNum = typeof num == 'number', str;
@@ -659,34 +647,6 @@ var secondsToHours = function(secs) {
       }
   }
   return out;
-}
-
-var toSwissEphTime = function(strTime) {
-    var parts = strTime.split(":"), t;
-    if (parts.length>1) {
-
-        t= zeroPad2(parts[0]) + '.' + zeroPad2(parts[1]);
-        if (parts.length>2) {
-            t += zeroPad2(parts[2]);
-        }
-    }
-    return t;
-};
-
-function objToString(obj) {
-    if (typeof obj == 'object') {
-        var parts = [], tp;
-        for (var sk in obj) {
-            tp = typeof obj[sk];
-            switch (tp) {
-                case 'string':
-                case 'number':
-                    parts.push(sk + ': ' + obj[sk]);
-                    break;
-            }
-        }
-        return parts.join(', ');
-    }
 }
 
 function localStorageSupported() {
