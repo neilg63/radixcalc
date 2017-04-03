@@ -3,9 +3,11 @@ var app = new Vue({
   data: {
     base: 12,
     baseId: 12,
+    maxResults: 50,
     system: 'place-value',
     showDec: true,
     result: 0,
+    resultOut:[],
     radixClass: 'radix-12',
     placeSep: '.',
     decResult:0,
@@ -15,6 +17,7 @@ var app = new Vue({
     showPrev: false,
     prevNum: 0,
     baseNums: [],
+    prevOut: [],
     layoutMode: 'base-12 rows-4-across',
     mode: '',
     prevClicked: '',
@@ -29,12 +32,12 @@ var app = new Vue({
       {value: 100,name: 'C',id: 'num-c','class': 'cell-num-c'},
       {value: 500,name: 'D',id: 'num-d','class': 'cell-num-d'},
       {value: 1000,name: 'M',id: 'num-m','class': 'cell-num-m'},
-      {value: 5000,name: 'v',id: 'num-v3','class': 'cell-num-v3'},
-      {value: 10000,name: 'x',id: 'num-x3','class': 'cell-num-x3'},
-      {value: 50000,name: 'l',id: 'num-l3','class': 'cell-num-l3'},
-      {value: 100000,name: 'c',id: 'num-c3','class': 'cell-num-c3'},
-      {value: 500000,name: 'd',id: 'num-d3','class': 'cell-num-d3'},
-      {value: 1000000,name: 'm',id: 'num-m3','class': 'cell-num-m3'},
+      {value: 5000,name: 'v',id: 'num-v3','class': 'cell-num-v3 ten-3'},
+      {value: 10000,name: 'x',id: 'num-x3','class': 'cell-num-x3 ten-3'},
+      {value: 50000,name: 'l',id: 'num-l3','class': 'cell-num-l3 ten-3'},
+      {value: 100000,name: 'c',id: 'num-c3','class': 'cell-num-c3 ten-3'},
+      {value: 500000,name: 'd',id: 'num-d3','class': 'cell-num-d3 ten-3'},
+      {value: 1000000,name: 'm',id: 'num-m3','class': 'cell-num-m3 ten-3'},
     ],
     romanSymbols:[],
     romanNums:{}
@@ -72,6 +75,12 @@ var app = new Vue({
     this.updateBase();
   },
   watch: {
+    result: function() {
+      this.resultOut = this.renderOut(this.result);
+    },
+    prevNum: function() {
+      this.prevOut = this.renderOut(this.prevNum);
+    },
     base: function() {
       this.updateOptions();
     },
@@ -90,8 +99,9 @@ var app = new Vue({
           name: '0',
           id: 'num-0',
           class: 'cell-num-0'
-        };
+        },cls='';
       for (var n=1,name; n< this.base;n++) {
+        cls = 'cell-num-'+n;
         if (n < 10) {
           name = n.toString();
           if (this.base == 60) {
@@ -121,7 +131,7 @@ var app = new Vue({
           value: n,
           name: name,
           id: 'num-'+n,
-          'class': 'cell-num-'+n
+          'class': cls
         });
       }
       if (this.base <= 36) {
@@ -273,8 +283,11 @@ var app = new Vue({
             }
             break;
         }
-        var res = this.decResult.toString(this.base);
-        
+        if (this.base <= 36) {
+          var res = this.decResult.toString(this.base);
+        } else {
+          var res = this.renderLarge(this.decResult);
+        }
         switch (this.base) {
           case 12:
             this.result = res.replace(/a/g,'d').replace(/b/g,'e');
@@ -293,6 +306,9 @@ var app = new Vue({
         resultSet.result = this.result;
         resultSet.dec.result = this.decResult;
         this.resultSets.unshift(resultSet);
+        if (this.resultSets.length > this.maxResults) {
+          this.resultSets.pop();
+        }
         storeItem('results',this.resultSets);
         if (op == '=') {
           this.hasResultSets = true;
@@ -403,6 +419,30 @@ var app = new Vue({
       }
       return parseFloat(dec) / mult;
     },
+    renderLarge: function(dec) {  
+      var toUnit = function(n) {
+        var out = '';
+        if (n>10) {
+
+          out = (Math.floor(n/10)+10).toString(36);
+        } else {
+          out = 'a';
+        }
+        out +=  (n%10).toString();
+        return out;
+      }
+      var units=[],tot=dec,rem;
+      var maxPow = Math.ceil(Math.pow(dec,1/this.base)),p=1;
+      for (;p<=maxPow;p++) {
+        rem = tot % Math.pow(this.base,p);
+        if (p>1) {
+          rem /= Math.pow(this.base,(p-1));
+        }
+        units.unshift(toUnit(rem));
+        tot -= rem;
+      }
+      return units.join('');
+    },
     renderRoman: function(dec) {
       var out='';
       if (isNumeric(dec)) {
@@ -499,6 +539,43 @@ var app = new Vue({
       if (this.optionsHideable) {
         this.showOptions = false;
       }
+    },
+    renderOut: function(numStr) {
+      var chars=[];
+      if (typeof numStr == 'string') {
+        if (numStr.length>0) {
+          var cs = this.truncate(numStr.trim()).split(''),n=cs.length,i=0,isSup=false,cls=[],ch;
+          for (;i<n;i++) {
+            ch = cs[i];
+            cls = [ch];
+            switch (this.base) {
+              case 60:
+                isSup = !isNumeric(ch);
+                if (isSup) {
+                  ch = (parseInt(ch,20) - 10).toString();
+                }
+                break;
+              case 10:
+                if (this.system == 'roman') {
+                  isSup = false;
+                  if (ch.charCodeAt(0) > 95) {
+                    cls.push('ten-3');
+                  }
+                }
+                break;
+              default:
+                isSup = false;
+                break;
+            }
+            chars.push({
+              classes: cls,
+              name: ch,
+              sup: isSup
+            });
+          }
+        }
+      }
+      return chars;
     }
   }
 });

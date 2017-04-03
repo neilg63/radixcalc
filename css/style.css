@@ -50,6 +50,14 @@ body {
 	opacity: 1;
 }
 
+.ten-3 > button,
+span.ten-3 {
+	text-decoration: overline;
+	text-transform: uppercase;
+}
+
+
+
 .system-roman .numbers .cell-dot,
 .system-roman #power-operator {
 	display:  none;
