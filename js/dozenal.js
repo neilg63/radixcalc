@@ -75,6 +75,9 @@ var app = new Vue({
     base: function() {
       this.updateOptions();
     },
+    baseId: function() {
+      this.updateOptions();
+    },
     showDec: function() {
       this.updateOptions();
     }
@@ -180,7 +183,12 @@ var app = new Vue({
           this.layoutMode = 'base-8 rows-4-across';
           break;
         case 10:
-          this.layoutMode = 'base-10 rows-3-across';
+          this.layoutMode = 'base-10';
+          if (this.system == 'roman') {
+            this.layoutMode += ' rows-4-across';
+          } else {
+            this.layoutMode += '-roman rows-3-across';
+          }
           break;
         case 12:
           this.layoutMode = 'base-12 rows-4-across';
@@ -416,6 +424,10 @@ var app = new Vue({
                 out += k.repeat(Math.floor(ratio));
                 rem = rem%v;
               } else {
+                if (prop === 0.9 && i>1) {
+                  pk = this.romanSymbols[(i-2)];
+                  pv = this.romanNums[pk];
+                }
                 out += pk + k;
                 rem -= (pv + v);
               }

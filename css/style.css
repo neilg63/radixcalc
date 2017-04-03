@@ -49,6 +49,7 @@ body {
 	opacity: 1;
 }
 
+.system-roman .numbers .cell-dot,
 .system-roman #power-operator {
 	display:  none;
 }
@@ -114,11 +115,6 @@ body {
 #calc-pad,
 .numbers {
 	position: relative;
-}
-
-.system-roman .numbers .cell-dot {
-	opacity: 0;
-	pointer-events: none;
 }
 
 #calc-pad {
@@ -272,12 +268,20 @@ body {
 	width: 50%;
 }
 
-#calc-pad .operators {
+.system-roman #calc-pad .numbers {
 	width: 50%;
+}
+
+.system-roman #calc-pad .operators {
+	margin-left: 2.5%;
+}
+
+#calc-pad .operators {
+	position: relative;
+	max-width: 30%;
 	float: left;
 	display: flex;
 	flex-direction: column;
-	max-width:  6em;
 }
 
 .operators button {
@@ -309,16 +313,17 @@ body {
 }
 
 .operators button.operator {
-	padding: 0.25em 0.125em;
-	max-width: 2.5em;
+	padding: 0.125em;
+	width:  2.5em;
+	max-width: 2em;
 	position: relative;
 }
 
 .operators button#calc-button {
-	padding: 0.5em 0.125em;
+	padding: 0.375em 0.125em;
 	transform: scaleX(2);
-	margin-left: 0.625em;
-	max-width: 1.25em;
+	margin-left: 0.5em;
+	max-width: 1em;
 }
 
 .numbers button {
@@ -338,6 +343,10 @@ body {
 }
 .base-10 .numbers button {
 	font-size: 4em;
+}
+
+.base-10-roman .numbers button {
+	font-size: 3.3em;
 }
 
 .base-12 .numbers button {
@@ -524,7 +533,7 @@ body {
 
 	#calc-pad .operators {
 		float: right;
-		width: 25%;
+		max-width: 25%;
 	}
 
 	#radix-logo {
