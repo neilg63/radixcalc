@@ -39,6 +39,10 @@ body {
 	text-align: center;
 }
 
+.radix-36 #radix-logo .text {
+	color: #999900;
+}
+
 .radix-2 #radix-logo:hover .base-2,
 .radix-8 #radix-logo:hover .base-8,
 .radix-10.system-place-value #radix-logo:hover .base-10,
@@ -46,6 +50,7 @@ body {
 .radix-12 #radix-logo:hover .base-12,
 .radix-16 #radix-logo:hover .base-16,
 .radix-20 #radix-logo:hover .base-20,
+.radix-36 #radix-logo:hover .base-36,
 .radix-60 #radix-logo:hover .base-60 {
 	opacity: 1;
 }
@@ -108,6 +113,11 @@ span.ten-3 {
 .radix-20 #radix-logo:before {
 	content: "\e902";
 }
+
+.radix-36 #radix-logo:before {
+	content: "\e907";
+}
+
 .radix-60 #radix-logo:before {
 	content: "\e901";
 }
@@ -159,6 +169,13 @@ span.ten-3 {
 .radix-2 #result {
 	color: #cc5500;
 }
+
+
+.radix-36 #radix-logo:before,
+.radix-36 #result {
+	color: #999900;
+}
+
 
 .radix-60 #radix-logo:before,
 .radix-60 #result {
