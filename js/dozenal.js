@@ -164,7 +164,6 @@ var app = new Vue({
     },25),
     validateNum: function(num,name) {
       var valid = true;
-      console.log(num)
       switch (this.base) {
         case 10:
           if (this.system == 'roman') {
@@ -423,7 +422,7 @@ var app = new Vue({
           var len = parts[1].length;
           if (len>0) {
             var v2 = this._convertDecColPart(parts[1]);
-            val += v2 / Math.pow(10,len);
+            val += v2 / Math.pow(this.base,(len/2));
           }
         }
       }
@@ -468,7 +467,17 @@ var app = new Vue({
       }
       return parseFloat(dec) / mult;
     },
-    renderLarge: function(dec) {  
+    renderLarge: function(dec) {
+      var val = this._renderLarge(Math.floor(dec)),
+      frac = (dec%1);
+      if (frac > 0) {
+        var mult = Math.pow(this.base,(frac.toString().length-3));
+        //console.log(mult,frac,frac * mult)
+        val += this.placeSep + this._renderLarge(frac * mult,'frac');
+      }
+      return val;
+    },
+    _renderLarge: function(dec,mode) {  
       var toUnit = function(n) {
         var out = '';
         if (n>10) {
@@ -481,7 +490,7 @@ var app = new Vue({
         return out;
       }
       var units=[],tot=dec,rem;
-      var maxPow = Math.ceil(Math.pow(dec,1/this.base)),p=1;
+      var maxPow = Math.ceil(Math.pow(dec,1/this.base)),p=1,out='';
       for (;p<=maxPow;p++) {
         rem = tot % Math.pow(this.base,p);
         if (p>1) {
@@ -490,7 +499,11 @@ var app = new Vue({
         units.unshift(toUnit(rem));
         tot -= rem;
       }
-      return units.join('');
+      out = units.join('').replace(/^a0(\w)/,"$1");
+      if (mode == 'frac') {
+        out = out.replace(/(a0)+$/,"");
+      }
+      return out;
     },
     renderRoman: function(dec) {
       var out='';
@@ -593,16 +606,21 @@ var app = new Vue({
       var chars=[];
       if (typeof numStr == 'string') {
         if (numStr.length>0) {
-          var cs = this.truncate(numStr.trim()).split(''),n=cs.length,i=0,isSup=false,cls=[],ch;
+          var cs = this.truncate(numStr.trim()).split(''),
+            n=cs.length,i=0,isSup=false,cls=[],skip=false,ch;
           for (;i<n;i++) {
             ch = cs[i];
             cls = [ch];
+            skip = false;
             switch (this.base) {
               case 60:
                 if (ch != '.') {
                   isSup = !isNumeric(ch);
                   if (isSup) {
                     ch = (parseInt(ch,20) - 10).toString();
+                  }
+                  if (i==(n-1) && ch=='a0') {
+                    skip = true;
                   }
                 }
                 break;
@@ -618,11 +636,13 @@ var app = new Vue({
                 isSup = false;
                 break;
             }
-            chars.push({
-              classes: cls,
-              name: ch,
-              sup: isSup
-            });
+            if (!skip) {
+              chars.push({
+                classes: cls,
+                name: ch,
+                sup: isSup
+              });
+            }
           }
         }
       }
