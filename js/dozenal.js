@@ -263,6 +263,7 @@ var app = new Vue({
           this.layoutMode = 'base-60 rows-10-across';
           break;
       }
+      //this.placeSep = this.base == 10? '.' : ';';
       this.clear();
     },
     _operate: function(newMode) {
@@ -660,11 +661,15 @@ var app = new Vue({
             n=cs.length,i=0,isSup=false,cls=[],skip=false,ch;
           for (;i<n;i++) {
             ch = cs[i];
-            cls = [ch];
+            if (/[a-z0-9]/i.test(ch)) {
+              cls = [ch];
+            } else {
+              cls = 'sep';
+            }
             skip = false;
             switch (this.base) {
               case 60:
-                if (ch != '.') {
+                if (/[a-z0-9]/i.test(ch)) {
                   isSup = !isNumeric(ch);
                   if (isSup) {
                     ch = (parseInt(ch,20) - 10).toString();
