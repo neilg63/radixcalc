@@ -73,6 +73,7 @@ var app = new Vue({
       }
     }
     this.updateBase();
+
   },
   watch: {
     result: function() {
@@ -471,13 +472,36 @@ var app = new Vue({
       var val = this._renderLarge(Math.floor(dec)),
       frac = (dec%1);
       if (frac > 0) {
-        var mult = Math.pow(this.base,(frac.toString().length-3));
-        //console.log(mult,frac,frac * mult)
-        val += this.placeSep + this._renderLarge(frac * mult,'frac');
+        val += this.placeSep + this._renderLargeFrac(frac);
       }
       return val;
     },
-    _renderLarge: function(dec,mode) {  
+    _renderLargeFrac: function(decFrac) {
+      var v1 = decFrac,v2,v3,pow,out='';
+      for (var i=1;i<6;i++) {
+        pow = Math.pow(60,i);
+        v2 = v1 * pow;
+        if (v2 < 1) {
+          out += 'a0';
+        } else {
+          v3 = Math.floor(v2);
+
+          if (v3 < 10) {
+            out += 'a';
+          } else {
+            out += String.fromCharCode(97 + Math.floor(v3/10));
+          }
+          out += (v3%10).toString();
+          v1 -= (v3/pow);
+          v1 *= 1.000000001;
+        }
+        if (v1 <= 0) {
+          break;
+        }
+      }
+      return out.replace(/(a0)+$/,'');
+    },
+    _renderLarge: function(dec) {  
       var toUnit = function(n) {
         var out = '';
         if (n>10) {
@@ -499,11 +523,7 @@ var app = new Vue({
         units.unshift(toUnit(rem));
         tot -= rem;
       }
-      out = units.join('').replace(/^a0(\w)/,"$1");
-      if (mode == 'frac') {
-        out = out.replace(/(a0)+$/,"");
-      }
-      return out;
+      return units.join('').replace(/^a0(\w)/,"$1");
     },
     renderRoman: function(dec) {
       var out='';
