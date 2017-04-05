@@ -16,7 +16,7 @@
 		
 		<div class="active-line result-line">
 			<div id="prev-val" v-if="showPrev" :title="prevVal"><template v-for="char in prevOut"><template v-if="char.sup"><sup :class="char.classes">{{char.name}}</sup></template><template v-else><span :class="char.classes">{{char.name}}</span></template></template></div>
-			<div id="mode" v-if="showPrev">{{mode}}</div>
+			<div class="mode" v-if="showPrev">{{mode}}</div>
 			<div id="result" :title="decResult"><template v-for="char in resultOut"><template v-if="char.sup"><sup :class="char.classes">{{char.name}}</sup></template><template v-else><span :class="char.classes">{{char.name}}</span></template></template></div>
 
 			<button id="back-button" class="display-control" v-on:click="backspace()">&lt;</button>

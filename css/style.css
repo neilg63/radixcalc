@@ -150,19 +150,19 @@ span.ten-3 {
 	color: #009900;
 }
 
-#result > span {
+.active-line > div > span {
 	display: inline-block;
 	position: relative;
 	line-height: 1.25em;
 	overflow: hidden;
 }
 
-#result > span.sep {
+.active-line > div > span.sep {
 	top: -.25em;
 	margin: -0.25em 0.125em 0 0.125em;
 }
 
-.radix-10 #result > span.sep {
+.radix-10 .active-line > div > span.sep {
 	top: 0;
 	margin: 0 0.0625em;
 	font-size: 1em;
@@ -268,6 +268,11 @@ span.ten-3 {
 .active-line > div {
 	display:  inline-block;
 	margin-right: 1em;
+}
+
+.active-line > div.mode {
+	position: relative;
+	top: -0.25em;
 }
 
 .show-all-results .prev-results {
