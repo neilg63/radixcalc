@@ -158,37 +158,49 @@ var app = new Vue({
       }
       if (this.validateNum(num,name)) {
         this.result = res + name;
+        if (this.system == 'roman' && this.base == 10) {
+          this.rewriteRomanResult(num);
+        }
       }
       
       this.decResult = this.convert(this.result);
       this.prevClicked = name;
     },25),
     validateNum: function(num,name) {
-      var valid = true;
-      switch (this.base) {
-        case 10:
-          if (this.system == 'roman') {
-            var chars = this.result.split(''),len=chars.length;
-            if (len>0) {
-              var pCh = chars[(len-1)],
-                currIndex = this.romanSymbols.indexOf(name),
-                prevIndex = this.romanSymbols.indexOf(pCh);
-                if (currIndex % 2 == 1 && name == pCh) {
-                  valid = false;
-                }
-                if (len>1) {
-                  var ppCh = chars[(len-2)],
-                    penIndex =this.romanSymbols.indexOf(ppCh);
-                    if (currIndex < prevIndex && ppCh==pCh && pCh != name) {
-                      valid = false;
-                    }
-                }
-                
+      return true;
+    },
+    rewriteRomanResult: function(num) {
+      var chars = this.result.split(''),
+        len=chars.length,i=(len-1),
+        low = len>5? len-5 : 0,index=-2,
+        prevIndex=-2,penIndex=-2,prevCount=0,next=-2;
+      if (len>0) {
+        for (;i >= low;i--) {
+          index = this.romanSymbols.indexOf(chars[i]);
+          isFive = index % 2 == 1;
+          if (index == prevIndex) {
+            prevCount++;
+            if (isFive) {
+              this.result = this.result.substring(0,(len-2)) + this.romanSymbols[(index+1)];
+            } else if (prevCount>2) {
+              next = index + 1;
+              if (next < this.romanSymbols.length) {
+                this.result = this.result.substring(0,(len-3)) + this.romanSymbols[next];
+              }
             }
+          } else {
+            prevCount=0;
           }
-          break;
+          if (index == penIndex && ((index+1) == prevIndex || (index+2) == prevIndex)) {
+            this.result = this.renderRoman(this.decResult + num);
+          }
+          else if (penIndex >= 0 && prevIndex <= penIndex && index >= prevIndex) {
+            this.result = this.renderRoman(this.decResult + num);
+          }
+          penIndex = prevIndex;
+          prevIndex = index;
+        }
       }
-      return valid;
     },
     enterDot: function() {
       if (this.result.contains(this.placeSep)==false) {
@@ -557,7 +569,11 @@ var app = new Vue({
             ratio = rem / v;
             if (ratio >= prop) {
               if (ratio >= 1) {
-                out += k.repeat(Math.floor(ratio));
+                if (ratio < 4) {
+                  out += k.repeat(Math.floor(ratio));
+                } else {
+                  out = out.substring(0,(out.length-1)) + k + this.romanSymbols[(i+2)];
+                }
                 rem = rem%v;
               } else {
                 if (prop === 0.9 && i>1) {
