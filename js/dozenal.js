@@ -368,9 +368,23 @@ var app = new Vue({
     truncate: function(numStr) {
       if (typeof numStr == 'string') {
         if (numStr.length>1 && numStr.contains(this.placeSep)) {
-          var parts = numStr.split(this.placeSep);
-          if (parts.length>1 && parts[1].length>8) {
-            parts[1] = parts[1].substring (0,8).replace(/0+$/g,'');
+          var parts = numStr.split(this.placeSep),
+            maxPlaces = 10;
+          if (this.base < 3) {
+              maxPlaces = 16;
+          } else if (this.base < 4) {
+              maxPlaces = 14;
+          } else if (this.base < 10) {
+            maxPlaces = 12;
+          } else if (this.base < 21) {
+            maxPlaces = 10;
+          } else if (this.base < 37) {
+            maxPlaces = 8;
+          } else {
+            maxPlaces = 12;
+          }
+          if (parts.length>1 && parts[1].length>maxPlaces) {
+            parts[1] = parts[1].substring (0,maxPlaces).replace(/0+$/g,'');
             numStr = parts.join(this.placeSep);
           }
         }
