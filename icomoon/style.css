@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?eky81e');
-  src:  url('fonts/icomoon.eot?eky81e#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.woff2?eky81e') format('woff2'),
-    url('fonts/icomoon.ttf?eky81e') format('truetype'),
-    url('fonts/icomoon.woff?eky81e') format('woff'),
-    url('fonts/icomoon.svg?eky81e#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?p9uh9k');
+  src:  url('fonts/icomoon.eot?p9uh9k#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.woff2?p9uh9k') format('woff2'),
+    url('fonts/icomoon.ttf?p9uh9k') format('truetype'),
+    url('fonts/icomoon.woff?p9uh9k') format('woff'),
+    url('fonts/icomoon.svg?p9uh9k#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -25,11 +25,11 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-info-with-circle:before {
-  content: "\e908";
+.icon-rational-fractions:before {
+  content: "\e909";
 }
-.icon-binary:before {
-  content: "\e906";
+.icon-decimal-fractions:before {
+  content: "\e90a";
 }
 .icon-star-36:before {
   content: "\e907";
@@ -66,6 +66,12 @@
 }
 .icon-female-sign:before {
   content: "\e90d";
+}
+.icon-info-with-circle:before {
+  content: "\e908";
+}
+.icon-binary:before {
+  content: "\e906";
 }
 .icon-pencil2:before {
   content: "\e914";

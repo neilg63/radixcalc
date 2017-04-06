@@ -11,17 +11,18 @@
 </head>
 <body>
 
-<main id="radix-calc" :class="[showDec? 'show-dec' : 'hide-dec',radixClass,showOptions? 'show-options' : 'hide-options','system-'+this.system]">
+<main id="radix-calc" :class="[showDec? 'show-dec' : 'hide-dec',radixClass,showOptions? 'show-options' : 'hide-options','system-'+this.system,showRational? 'show-rational' : 'show-pvfracs']">
 	<section id="result-pad" :class="resultPadClass">
 		
 		<div class="active-line result-line">
-			<div id="prev-val" v-if="showPrev" :title="prevVal"><template v-for="char in prevOut"><template v-if="char.sup"><sup :class="char.classes">{{char.name}}</sup></template><template v-else><span :class="char.classes">{{char.name}}</span></template></template></div>
+			<div id="prev-val" v-if="showPrev" :title="prev.decVal"><template v-for="char in prev.out"><template v-if="char.sup"><sup :class="char.classes">{{char.name}}</sup></template><template v-else><span :class="char.classes">{{char.name}}</span></template></template></div>
+			<div class="prev fraction" v-if="prev.baseFrac.divisor > 0 && showPrev"><sup>{{prev.baseFrac.multiple}}</sup><span class="sep">/</span><sub>{{prev.baseFrac.divisor}}</sub></div>
 			<div class="mode" v-if="showPrev">{{mode}}</div>
-			<div id="result" :title="decResult"><template v-for="char in resultOut"><template v-if="char.sup"><sup :class="char.classes">{{char.name}}</sup></template><template v-else><span :class="char.classes">{{char.name}}</span></template></template></div>
-
+			<div id="result" :title="result.decVal" :class="[result.decVal < 1? 'under-one' : 'over-one']"><template v-for="char in result.out"><template v-if="char.sup"><sup :class="char.classes">{{char.name}}</sup></template><template v-else><span :class="char.classes">{{char.name}}</span></template></template></div>
+			<div class="result fraction" v-if="result.baseFrac.divisor > 0"  :class="[result.decVal < 1? 'under-one' : 'over-one']"><sup>{{result.baseFrac.multiple}}</sup><span class="sep">/</span><sub>{{result.baseFrac.divisor}}</sub></div>
 			<button id="back-button" class="display-control" v-on:click="backspace()">&lt;</button>
 			<button id="clear-button" class="display-control" v-on:click="clear()">C</button>
-			<div class="dec-result dec-out">{{decResult}}</div>
+			<div class="dec-result dec-out">{{result.decVal}}</div>
 		</div>
 		
 	</section>
@@ -61,11 +62,9 @@
 		</div>
 	</div>
 	<section id="option-pane">
+		<h2 class="base-name" id="base-name" v-on:click="toggleOptions()">{{baseName}}</h2>
 		<form name="options" id="option-form">
-			<div class="control-row control">
-			<input type="checkbox" id="show-dec-checkbox" v-model="showDec" />
-			<label for="show-dec-checkbox" title="Show decimal notation in non-decimal bases">Show decimal</label>
-		</div>
+			
 		<select v-model="baseId" class="radix-control control" v-on:change="updateBase()">
 			<option value="2">Binary</option>
 			<option value="8">Octal</option>
@@ -77,8 +76,18 @@
 			<option value="36">Base 36</option>
 			<option value="60">Sexagesimal</option>
 		</select>
+
+		<div class="control-row control">
+				<input type="checkbox" id="show-rat-frac-checkbox" v-model="showRational" />
+				<label for="show-rat-frac-checkbox" title="Show rational fractions"> Rational fractions</label>
+			</div>
+			<div class="control-row control">
+				<input type="checkbox" id="show-dec-checkbox" v-model="showDec" />
+				<label for="show-dec-checkbox" title="Show decimal notation in non-decimal bases">Show decimal</label>
+			</div>
 		</form>
-		<div id="option-toggle" class="icon-cog" v-on:click="toggleOptions()"></div>
+		<div id="fraction-toggle" class="option-widget" v-on:click="toggleFractions()" :class="[showRational? 'icon-rational-fractions' : 'icon-decimal-fractions']"></div>
+		<div id="option-toggle" class="icon-cog option-widget" v-on:click="toggleOptions()"></div>
 	</section>
 	<div id="radix-logo" v-on:mouseenter="showOptPane()" v-on:mouseleave="hideOptPane()">
 		<div class="text base-2"><span class="first">Binary</span><span class="second">Binary</span></div>
