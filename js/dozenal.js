@@ -11,11 +11,11 @@ function RationalFraction(decFrac,divisor) {
         divisor *= fr.divisor;
         decFrac *= fr.divisor;
       } else {
-        divisor = Math.round(divisor);
+        divisor = divisor;
       }
     }
-    this.multiple = decFrac;
-    this.divisor = divisor;
+    this.multiple = Math.round(decFrac);
+    this.divisor = Math.round(divisor);
     if (divisor > 3) {
       for (; n <= (divisor/2);n++) {
         if (divisor % n === 0) {
@@ -44,8 +44,8 @@ function RationalFraction(decFrac,divisor) {
       return [0,0];
     }
     var frac = convert(decFrac);
-    this.multiple = frac[0];
-    this.divisor = frac[1];
+    this.multiple = Math.round(frac[0]);
+    this.divisor = Math.round(frac[1]);
   }
 }
 
